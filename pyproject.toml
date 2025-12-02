@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "urdfenvs"
+version = "0.10.2"
+description = "Simple simulation environment for robots, based on the urdf files."
+authors = ["Max Spahn <m.spahn@tudelft.nl>"]
+maintainers = [
+  "Max Spahn <m.spahn@tudelft.nl>",
+  "Chadi Salmi <c.salmi@tudelft.nl"
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://maxspahn.github.io/gym_envs_urdf/"
+documentation = "https://maxspahn.github.io/gym_envs_urdf/"
+repository = "https://github.com/maxspahn/gym_envs_urdf"
+keywords = ["robotics", "motion-planning", "simulation"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+deprecation = "^2.1.0"
+gymnasium = "1.0.0.a1"
+dill = "^0.3.7"
+moviepy = "^1.0.3"
+robotmodels = "^0.2.0"
+mpscenes = "^0.4.6"
+
+[tool.poetry.extras]
+keyboard = ["pynput", "multiprocess"]
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.0"
+autopep8 = "^1.6.0"
+pytest = "^6.2.5"
+black = "^24.2.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = "4.2.0"
+sphinx-rtd-theme = "1.0.0"
+sphinxcontrib-napoleon = "0.7"
+
+[tool.poetry.group.keyboard]
+optional = true
+
+[tool.poetry.group.pybullet]
+optional = true
+
+[tool.poetry.group.mujoco]
+optional = true
+
+[tool.poetry.group.keyboard.dependencies]
+pynput = "^1.7.6"
+multiprocess = "^0.70.12"
+
+[tool.poetry.group.mujoco.dependencies]
+imageio = "^2.14"
+dm-control = "^1.0.18"
+
+[tool.poetry.group.pybullet.dependencies]
+pybullet = "^3.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
