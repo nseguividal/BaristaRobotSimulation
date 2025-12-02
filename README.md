@@ -24,5 +24,5 @@ python -c "import pybullet as p; print('pybullet', p.__version__)"
 ## 7. Run the example
 python tests/albert.py
 
-##8. When done, press Ctrl+C to stop and then:
+## 8. When done, press Ctrl+C to stop and then:
 conda deactivate
