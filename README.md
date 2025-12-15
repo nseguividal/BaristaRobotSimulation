@@ -2,6 +2,8 @@
 Project for the course Planning and Decision Making followed at TU Delft, where we implement a planning algorithm for a barista robot. 
 
 
+## Installation (only once)
+
 # 1. Open terminal and go to repo
 cd ~/PDM_project/BaristaRobotSimulation/
 
@@ -26,3 +28,27 @@ python tests/albert.py
 
 # 8. When done, press Ctrl+C to stop and then:
 conda deactivate
+
+
+## To run a file 
+
+# 1. Open terminal and go to repo
+cd ~/PDM_project/BaristaRobotSimulation/
+
+# 2. Activate gym enviroment 
+conda activate gym_env
+
+# 3. Run files
+python tests/barista_scenario.py
+
+
+
+
+### Extras
+To see all enviroments: conda info --envs
+
+URDF file of the albert robot taken from this git repo: https://github.com/maxspahn/gym_envs_urdf
+
+Kill pybullet: control + C 
+
+To move around: press control 
