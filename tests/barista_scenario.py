@@ -77,26 +77,13 @@ class BoxObstacle:
         else:
             self._rgba = np.array([0.5, 0.5, 0.5, 1.0])
 
-    def type(self):
-        return "box"
-
-    def position(self, t=None):
-        return self._pos
-    
-    def velocity(self, t=None):
-        return np.zeros(6)  # Returns 6D velocity (linear_x, _y, _z, angular_x, _y, _z)
-    
-    def orientation(self, t=None):
-        return self._ori
-
-    def size(self):
-        return self._size
-        
-    def rgba(self):
-        return self._rgba
-    
-    def movable(self):
-        return False    #Fixed = static obstacle 
+    def type(self): return "box"
+    def position(self, t=None): return self._pos
+    def velocity(self, t=None): return np.zeros(6)  # Returns 6D velocity (linear_x, _y, _z, angular_x, _y, _z)
+    def orientation(self, t=None): return self._ori
+    def size(self): return self._size   
+    def rgba(self): return self._rgba
+    def movable(self): return False    #Fixed = static obstacle 
 
 
 def get_static_obstacles():
@@ -113,37 +100,6 @@ def get_static_obstacles():
         rgba=[0.6, 0.4, 0.2, 1.0] 
     ))
     
-    # 2.1. Table 1
-    obstacles.append(BoxObstacle(
-        name="customer_table_1",
-        pos= [2, 4.0, 0.4], # Located at x=8, y=1.0
-        size=TABLE_SIZE_SMALL,
-        rgba=[0.6, 0.4, 0.2, 1.0] 
-    ))
-
-    # 2.2. Table 2
-    obstacles.append(BoxObstacle(
-        name="customer_table_2",
-        pos= [2, -4.0, 0.4], # Located at x=8, y=1.0
-        size=TABLE_SIZE_MEDIUM,
-        rgba=[0.6, 0.4, 0.2, 1.0] 
-    ))
-
-    # 2.3. Table 3
-    obstacles.append(BoxObstacle(
-        name="customer_table_3",
-        pos= [-2, 1.0, 0.4], # Located at x=8, y=1.0
-        size=TABLE_SIZE_SMALL,
-        rgba=[0.6, 0.4, 0.2, 1.0] 
-    ))
-
-    # 2.4. Table 4
-    obstacles.append(BoxObstacle(
-        name="customer_table_4",
-        pos=[-1, 5.0, 0.4], # Located at x=8, y=1.0
-        size=TABLE_SIZE_SMALL,
-        rgba=[0.6, 0.4, 0.2, 1.0] 
-    ))
 
     # 3.1. Top Wall (up)
     obstacles.append(BoxObstacle(
@@ -209,15 +165,310 @@ def run_barista_scenario(n_steps=1000000, render=True):
     full_start_pose = np.array(ROBOT_START_POS + ROBOT_START_ARM)
     ob = env.reset(pos=full_start_pose)
     
+
+    # --- 5. Load the Objects URDF manually to add then to the scene ---
+    # Define paths to each object
+    barstool_urdf_path = "urdfenvs/barstool/barstool.urdf"
+    bar_cabinet_urdf_path = "urdfenvs/bar_cabinet/bar_cabinet.urdf"
+    round_table_1_urdf_path = "urdfenvs/round_table/round_table_1.urdf"
+    round_table_2_urdf_path = "urdfenvs/round_table/round_table_2.urdf"
+    round_table_3_urdf_path = "urdfenvs/round_table/round_table_3.urdf"
+    round_table_4_urdf_path = "urdfenvs/round_table/round_table_4.urdf"
+    round_table_5_urdf_path = "urdfenvs/round_table/round_table_5.urdf"
+    chair_table_1_urdf_path = "urdfenvs/chair/chair_table_1.urdf"
+    chair_table_2_urdf_path = "urdfenvs/chair/chair_table_2.urdf"
+    chair_table_3_urdf_path = "urdfenvs/chair/chair_table_3.urdf"
+    chair_table_4_urdf_path = "urdfenvs/chair/chair_table_4.urdf"
+    chair_table_5_urdf_path = "urdfenvs/chair/chair_table_5.urdf"
+
+    try:
+        # Barstool 1
+        p.loadURDF(
+            barstool_urdf_path, 
+            basePosition=[2.3, 0.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Barstool 2
+        p.loadURDF(
+            barstool_urdf_path, 
+            basePosition=[2.3, 1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Barstool 3
+        p.loadURDF(
+            barstool_urdf_path, 
+            basePosition=[2.3, -1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Barstool 4
+        p.loadURDF(
+            barstool_urdf_path, 
+            basePosition=[2.3, 2.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Barstool 5
+        p.loadURDF(
+            barstool_urdf_path, 
+            basePosition=[2.3, -2.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        print("Barstools loaded successfully.")
+    except Exception as e:
+        print(f"Could not load barstools. Check path: {barstool_urdf_path}. Error: {e}")
+    
+    try:
+        # Bar Cabinet 1
+        p.loadURDF(
+            bar_cabinet_urdf_path, 
+            basePosition=[4.65, 0.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Bar Cabinet 2
+        p.loadURDF(
+            bar_cabinet_urdf_path, 
+            basePosition=[4.65, 1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Bar Cabinet 3
+        p.loadURDF(
+            bar_cabinet_urdf_path, 
+            basePosition=[4.65, -1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        print("Bar Cabinet loaded successfully.")
+    except Exception as e:
+        print(f"Could not load bar_cabinet. Check path: {bar_cabinet_urdf_path}. Error: {e}")
+
+    try:
+        # Cafe Table 1
+        p.loadURDF(
+            round_table_1_urdf_path, 
+            basePosition=[-2.0, 1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 1.1
+        p.loadURDF(
+            chair_table_1_urdf_path, 
+            basePosition=[-2.0, 1.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 1.2
+        p.loadURDF(
+            chair_table_1_urdf_path, 
+            basePosition=[-2.0, 0.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 3.14159]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 1.3
+        p.loadURDF(
+            chair_table_1_urdf_path, 
+            basePosition=[-2.5, 1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 1.4
+        p.loadURDF(
+            chair_table_1_urdf_path, 
+            basePosition=[-1.5, 1.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )        
+        print("Cafe table 1 and chairs loaded successfully.")
+    except Exception as e:
+        print(f"Could not load cafe_table or chair_table")
+
+    try:
+        # Cafe Table 2
+        p.loadURDF(
+            round_table_2_urdf_path, 
+            basePosition=[-2.0, -3.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        """
+        # Table Chair 2.1
+        p.loadURDF(
+            chair_table_2_urdf_path, 
+            basePosition=[-2.0, -2.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 2.2
+        p.loadURDF(
+            chair_table_2_urdf_path, 
+            basePosition=[-2.0, -3.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 3.14159]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        """
+        # Table Chair 2.3
+        p.loadURDF(
+            chair_table_2_urdf_path, 
+            basePosition=[-2.5, -3.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 2.4
+        p.loadURDF(
+            chair_table_2_urdf_path, 
+            basePosition=[-1.5, -3.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        ) 
+        print("Cafe table 2 and chairs loaded successfully.")
+    except Exception as e:
+        print(f"Could not load cafe_table or chair_table")
+
+    try:
+        # Cafe Table 3
+        p.loadURDF(
+            round_table_3_urdf_path, 
+            basePosition=[-2.0, 6.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 3.1
+        p.loadURDF(
+            chair_table_3_urdf_path, 
+            basePosition=[-2.0, 6.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 3.2
+        p.loadURDF(
+            chair_table_3_urdf_path, 
+            basePosition=[-2.0, 5.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 3.14159]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        """
+        # Table Chair 3.3
+        p.loadURDF(
+            chair_table_3_urdf_path, 
+            basePosition=[-2.5, 6.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 3.4
+        p.loadURDF(
+            chair_table_3_urdf_path, 
+            basePosition=[-1.5, 6.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        ) 
+        """
+        print("Cafe table 3 and chairs loaded successfully.")
+    except Exception as e:
+        print(f"Could not load cafe_table or chair_table. Check path: {round_table_urdf_path}. Error: {e}")
+
+
+    try:
+        # Cafe Table 4
+        p.loadURDF(
+            round_table_4_urdf_path, 
+            basePosition=[3.0, 7.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 4.1
+        p.loadURDF(
+            chair_table_4_urdf_path, 
+            basePosition=[3.0, 7.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        
+        # Table Chair 4.2
+        p.loadURDF(
+            chair_table_4_urdf_path, 
+            basePosition=[3.0, 6.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 3.14159]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        """
+        # Table Chair 4.3
+        p.loadURDF(
+            chair_table_4_urdf_path, 
+            basePosition=[2.5, 7.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 4.4
+        p.loadURDF(
+            chair_table_4_urdf_path, 
+            basePosition=[3.5, 7.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        ) 
+        """
+        print("Cafe table 2 and chairs loaded successfully.")
+    except Exception as e:
+        print(f"Could not load cafe_table or chair_table")
+
+
+    try:
+        # Cafe Table 5
+        p.loadURDF(
+            round_table_5_urdf_path, 
+            basePosition=[3.0, -5.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 5.1
+        p.loadURDF(
+            chair_table_5_urdf_path, 
+            basePosition=[3.0, -4.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 0]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 5.2
+        p.loadURDF(
+            chair_table_5_urdf_path, 
+            basePosition=[3.0, -5.5, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 3.14159]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        """
+        # Table Chair 5.3
+        p.loadURDF(
+            chair_table_5_urdf_path, 
+            basePosition=[2.5, -5.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, 1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        )
+        # Table Chair 5.4
+        p.loadURDF(
+            chair_table_5_urdf_path, 
+            basePosition=[3.5, -5.0, 0.0], # x, y, z (z=0 for floor)
+            baseOrientation=p.getQuaternionFromEuler([1.57, 0, -1.57]), # Rotate 90 degrees
+            useFixedBase=True # Make it static so the robot can crash into it without it flying away
+        ) 
+        """
+        print("Cafe table 5 and chairs loaded successfully.")
+    except Exception as e:
+        print(f"Could not load cafe_table or chair_table")
+
+
+
+
+
     print(f"Scenario Loaded. Robot at: {ROBOT_START_POS}")
     print("Simulation running... Press Ctrl+C to exit.")
     
-    # --- 5. Simulation Loop ---
+    # --- 6. Simulation Loop ---
     # We send zero actions just to keep the window open and the robot steady.
     action = np.zeros(env.n())
     
-    import time # Import time library
-
     print("Simulation running... Press Ctrl+C in the terminal to close.")
 
     try:

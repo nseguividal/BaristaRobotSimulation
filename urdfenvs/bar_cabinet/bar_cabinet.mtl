@@ -1,0 +1,10 @@
+newmtl set2
+illum 4
+# Set base color to White so the texture is visible
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 0.00
+# Link the image file 
+map_Kd cabinet_basecolor.png
+# map_Kd cabinet_ao.png
