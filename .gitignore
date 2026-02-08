@@ -1,0 +1,19 @@
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# PyBullet logs
+*.log
+

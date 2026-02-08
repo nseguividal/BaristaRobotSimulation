@@ -1,0 +1,38 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl KChair_Wood
+Ka 0.000000 0.000000 0.000000
+# RGB for Light Brown
+Kd 0.803922 0.658824 0.501961
+Ks 0.000000 0.000000 0.000000
+# map_Kd light_wood.png
+
+newmtl KChair_Screw
+Ka 0.000000 0.000000 0.000000
+Kd 0.721569 0.721569 0.721569
+Ks 0.330000 0.330000 0.330000
+
+newmtl Niraj_Shoe_Sole
+Ka 0.000000 0.000000 0.000000
+Kd 0.376471 0.286275 0.188235
+Ks 0.330000 0.330000 0.330000
+
+newmtl KChair_Wood1_
+Ka 0.000000 0.000000 0.000000
+Kd 0.803922 0.658824 0.501961
+Ks 0.330000 0.330000 0.330000
+# map_Kd white_wood.png
+
+newmtl KChair_Wood2_
+Ka 0.000000 0.000000 0.000000
+Kd 0.803922 0.658824 0.501961
+Ks 0.330000 0.330000 0.330000
+# map_Kd white_wood.png
+
+newmtl KChair_White
+Ka 0.000000 0.000000 0.000000
+Kd 0.952941 0.952941 0.952941
+Ks 0.330000 0.330000 0.330000
+
